@@ -115,8 +115,9 @@ footer .mono{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;text-t
   <p class="lede">Constructor de swaps (IRS y cross-currency), curvas de descuento y forward, cashflows y sensibilidades DV01 por tramo.</p>
   <div class="status"><span class="pulse"></span>Curvas · Mantenedor · Valorizador — live</div>
   <div class="actions">
-    <a class="btn" href="./curvas/">Abrir CurveBuilder <span class="arr">→</span></a>
-    <a class="btn ghost" href="https://tradeai.cl">← Volver a Suite TradeAI</a>
+    <a class="btn" href="./curvas/#valorizador">Valorizar un swap <span class="arr">→</span></a>
+    <a class="btn ghost" href="./curvas/">Mantenedor de curvas</a>
+    <a class="btn ghost" href="https://tradeai.cl">← Suite TradeAI</a>
   </div>
 </div></section>
 
@@ -135,13 +136,14 @@ footer .mono{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;text-t
     <h2>Gestión de swaps de tasa.</h2>
     <p class="lede2">Un adelanto del tipo de datos que manejará TradeSwap dentro de la suite. Cifras ilustrativas.</p>
   </div>
-  <div class="panel">
+  <a class="panel" href="./curvas/?product=IRS_CLP_CAM&tenor=5Y&csa=USD#valorizador" style="display:block">
     <div class="lbl">IRS CLP Cámara 5Y · ejemplo</div>
     <div class="r"><span class="m">NPV</span><span class="v sig">CLP 18.420.000</span></div>
     <div class="r"><span class="m">Tasa fija</span><span class="v m">5,18%</span></div>
     <div class="r"><span class="m">DV01</span><span class="v dn">− 9.240</span></div>
     <div class="r"><span class="m">Vencimiento</span><span class="v m">2030-11</span></div>
-  </div>
+    <div class="r"><span class="m">&nbsp;</span><span class="v sig">Valorizar este → </span></div>
+  </a>
 </div></section>
 
 <section class="suite band"><div class="wrap">
