@@ -1,0 +1,66 @@
+name: Sync CurveBuilder -> /curvas
+
+# Reconstruye la SPA del repo Coto-Trader/curve-engine y actualiza /curvas en
+# este repo (tradeswap.cl). Sin tokens: lee el repo publico curve-engine y hace
+# commit a este mismo repo con el GITHUB_TOKEN integrado.
+#   - Manual: Actions -> "Sync CurveBuilder -> /curvas" -> Run workflow
+#   - Programado: diario 09:00 UTC
+# No se dispara en 'push' para evitar bucles (legacy Pages ya republica al commitear).
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 9 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-curvas
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout tradeswap-cl (destino)
+        uses: actions/checkout@v4
+
+      - name: Checkout curve-engine (fuente de la SPA)
+        uses: actions/checkout@v4
+        with:
+          repository: Coto-Trader/curve-engine
+          ref: main
+          path: _src
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: _src/web/package-lock.json
+
+      - name: Build SPA
+        working-directory: _src/web
+        run: |
+          npm ci
+          npm run build
+
+      - name: Copiar build a /curvas
+        run: |
+          rm -rf curvas
+          mkdir -p curvas
+          cp -r _src/web/dist/. curvas/
+          rm -rf _src
+
+      - name: Commit si hay cambios
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add curvas
+          if git diff --cached --quiet; then
+            echo "Sin cambios en /curvas."
+          else
+            git commit -m "sync: CurveBuilder -> /curvas"
+            git push
+            echo "Actualizado /curvas."
+          fi
